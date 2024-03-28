@@ -1,10 +1,10 @@
-#include "mpi.h"
+#include "mpi.hpp"
 
 /*
     Use binomial tree to gather data. Each non-root node receive data from it's ancestor
     and put it in a temporary buffer. For each non-leaf node, send data to it's children. 
 */
-EXTERN_C MPI_METHOD MPI_Scatter(
+MPI_METHOD MPI_Scatter(
     const void* sendbuf,
     int sendcount,
     MPI_Datatype sendtype,
@@ -23,10 +23,10 @@ EXTERN_C MPI_METHOD MPI_Scatter(
         }
 
         /* receive data from the ancestor of the current node in the binomial tree to the tmpbuf. */
-        int relative_rank = (rank-root) % size, 
+        int relative_rank = (rank-root)<0? size+rank-root:rank-root, 
             depth = ceil(log2(size))-1,
             tmp_buf_size = sendcount || recvcount;
-        void* tmpbuf = relative_rank ? nullptr : sendbuf;
+        void* tmpbuf = relative_rank!=0 ? nullptr : sendbuf;
         
         while (depth>=0){
             int offset = 1<<depth;

@@ -1,6 +1,6 @@
-#include "mpi.h"
+#include "mpi.hpp"
 
-EXTERN_C MPI_METHOD MPI_Alltoall(
+MPI_METHOD MPI_Alltoall(
     const void* sendbuf,
     int sendcount,
     MPI_Datatype sendtype,

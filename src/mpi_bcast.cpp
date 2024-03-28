@@ -1,4 +1,4 @@
-#include "mpi.h"
+#include "mpi.hpp"
 #include <math.h> 
 
 /*
@@ -13,7 +13,7 @@
           /
          7  
 */
-EXTERN_C MPI_METHOD MPI_Bcast(
+MPI_METHOD MPI_Bcast(
     void* buffer,
     int count,
     MPI_Datatype datatype,
@@ -28,7 +28,7 @@ EXTERN_C MPI_METHOD MPI_Bcast(
                 return mpi_errno;
         }
 
-        int relative_rank = (rank-root) % size
+        int relative_rank = (rank-root)<0? size+rank-root:rank-root;
 
         /* receive from the source of current node. */
         if(rank!=root){

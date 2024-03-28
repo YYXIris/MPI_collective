@@ -1,11 +1,11 @@
-#include "mpi.h"
+#include "mpi.hpp"
 
 
 /*
     Use binomial tree to gather data. For each non-leaf node, gather data from children, 
     sort and put it in a temporary buffer.
 */
-EXTERN_C MPI_METHOD MPI_Gather(
+MPI_METHOD MPI_Gather(
     const void* sendbuf,
     int sendcount,
     MPI_Datatype sendtype,
@@ -24,10 +24,10 @@ EXTERN_C MPI_METHOD MPI_Gather(
         }
 
         /* receive data from all the childrens of the current node in the binomial tree to the tmpbuf in order. */
-        int relative_rank = (rank-root) % size, 
+        int relative_rank = (rank-root)<0? size+rank-root:rank-root, 
             depth = ceil(log2(size))-1,
             tmp_buf_size = sendcount;
-        void* tmpbuf = relative_rank ? nullptr :  recvbuf;
+        void* tmpbuf = relative_rank!=0 ? nullptr :  recvbuf;
         
         while (depth>=0){
             int offset = 1<<depth;

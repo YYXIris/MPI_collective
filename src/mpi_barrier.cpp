@@ -1,9 +1,9 @@
-#include "mpi.h"
+#include "mpi.hpp"
 
 /*
     Use ring to sendrecv data.
 */
-EXTERN_C MPI_METHOD MPI_Barrier( MPI_Comm comm){   
+MPI_METHOD MPI_Barrier( MPI_Comm comm){   
     int size, rank;
     MPI_RESULT mpi_errno = MPI_Comm_size( comm, &size) || MPI_Comm_rank( comm, &rank);
 

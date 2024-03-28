@@ -1,6 +1,6 @@
-#include "mpi.h"
+#include "mpi.hpp"
 
-EXTERN_C  MPI_METHOD MPI_Reduce(
+MPI_METHOD MPI_Reduce(
     const void* sendbuf,
     void* recvbuf,
     int count,
@@ -18,9 +18,9 @@ EXTERN_C  MPI_METHOD MPI_Reduce(
         }
 
         /* receive data from all the childrens of the current node in the binomial tree to the tmpbuf in order. */
-        int relative_rank = (rank-root) % size, 
+        int relative_rank = (rank-root)<0? size+rank-root:rank-root, 
             depth = ceil(log2(size))-1;
-        datatype* tmpbuf = relative_rank ? new datatype[static_cast<size_t>(count)] : recvbuf;
+        datatype* tmpbuf = relative_rank!=0 ? new datatype[static_cast<size_t>(count)] : recvbuf;
         
         while (depth>=0){
             int offset = 1<<depth;
