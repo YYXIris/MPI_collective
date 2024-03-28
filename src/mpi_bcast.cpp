@@ -14,11 +14,11 @@
          7  
 */
 EXTERN_C MPI_METHOD MPI_Bcast(
-    _Pre_opt_valid_ void* buffer,
-    _In_range_(>=, 0) int count,
-    _In_ MPI_Datatype datatype,
-    _mpi_coll_rank_(root) int root,
-    _In_ MPI_Comm comm
+    void* buffer,
+    int count,
+    MPI_Datatype datatype,
+    int root,
+    MPI_Comm comm
     ){
 
         int size, rank;
